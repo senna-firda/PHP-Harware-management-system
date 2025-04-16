@@ -4,16 +4,19 @@
 function Admin_Menu(){
     system('cls');
     NewLine(100);
-    echo "|       Admin Menu      |\n";
-    echo "|                       |\n";
-    echo "| - Opties:             |\n";
-    echo "|      1. Login         |\n";
-    echo "|      2. Go Back       |\n";
+    echo "┌────────────────────────┐\n";
+    echo "│       Admin Menu       │\n";
+    echo "│                        │\n";
+    echo "├──┬───   Opties   ──────┤\n";
+    echo "│  └┬─(1). Login         │\n";
+    echo "│   └─(2). Go Back       │\n";
+    echo "│                        │\n";
+    echo "└┬───────────────────────┘\n";
+    $choice = readline(" └────> ");
 
-    $choice = readline("option >_");
         switch ($choice){
         case "1":
-            echo "Login";
+            echo "Login\n";
             $e = readline("give password: ");
             echo "password = $e";
             break;

@@ -10,7 +10,7 @@ function Main_Menu() {
     system('cls');
     NewLine(100);
     echo "┌────────────────────────┐\n";
-    echo "│       Leen Systeem     │\n";
+    echo "│      Leen Systeem      │\n";
     echo "│                        │\n";
     echo "├──┬───   Opties   ──────┤\n";
     echo "│  └┬─(1). Admin Menu    │\n";
@@ -26,6 +26,7 @@ function Main_Menu() {
             Student_Menu();
             break;
         case "3":
+            echo "\nGoodbye~ ! <3\n\n";
             exit;
         }
         

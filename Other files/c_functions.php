@@ -1,22 +1,5 @@
 <?php
 
-# Connect DB
-$db_host = "localhost";
-$db_user = "root";
-$db_password = "";
-$db_name = "cmd_db";
-
-
-$conn = mysqli_connect($db_host, $db_user, $db_password, $db_name);
-if (!$conn) {
-    echo"". mysqli_connect_errno() ."couldn't connect";
-    die();
-} else {
-    echo "Database: $db_name \n";
-}
-
-
-
 function Newline($amount) {
     for ($i = 0; $i < $amount; $i++) {
         echo "\r\n";
@@ -59,12 +42,7 @@ function Student_Menu() {
 
 
 
-function Login() {
-    Newline(1);
-    echo "login";
-    Newline(2);
 
-}
 
                                                                
 
