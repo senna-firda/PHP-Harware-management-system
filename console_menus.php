@@ -1,9 +1,11 @@
 <?php
 
-
+function cls(){
+    print("\033[2J\033[;H");
+}
 function Admin_Menu(){
-    system('cls');
-    NewLine(100);
+    cls();
+    NewLine(00);
     echo "┌────────────────────────┐\n";
     echo "│       Admin Menu       │\n";
     echo "│                        │\n";
@@ -27,8 +29,8 @@ function Admin_Menu(){
 }
 
 function Student_Menu() {
-    system('cls');
-    NewLine(100);
+    cls();
+    NewLine(00);
     echo "┌────────────────────────┐\n";
     echo "│       Student Menu     │\n";
     echo "│                        │\n";

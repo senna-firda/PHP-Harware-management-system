@@ -1,14 +1,11 @@
 <?php
 require "console_menus.php";
-function NewLine($amount) {
-    for ($i = 0; $i < $amount; $i++){
-        echo "\r\n";
-    }
-}
+
+
 
 function Main_Menu() {
-    system('cls');
-    NewLine(100);
+    cls();
+    NewLine(0);
     echo "┌────────────────────────┐\n";
     echo "│      Leen Systeem      │\n";
     echo "│                        │\n";

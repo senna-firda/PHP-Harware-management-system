@@ -11,6 +11,7 @@ echo "__________________________";
 newline(2);
 while ($row = mysqli_fetch_assoc($query)) {
     $i++;
+     
     echo "$i  ". $row["product_naam"] ."\n";
 }
 echo "__________________________";
