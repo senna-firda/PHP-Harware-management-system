@@ -1,20 +1,36 @@
 <?php
-require "console_menus.php";
+require "console_functions.php";
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 
-
-function Main_Menu() {
+// 5 + 15 = 20 
+function Main_Menu() 
+{
     cls();
-    NewLine(0);
-    echo "┌────────────────────────┐\n";
-    echo "│      Leen Systeem      │\n";
-    echo "│                        │\n";
-    echo "├──┬───   Opties   ──────┤\n";
-    echo "│  └┬─(1). Admin Menu    │\n";
-    echo "│   ├─(2). Student Menu  │\n";
-    echo "│   └─(3). Exit          │\n";
-    echo "└┬───────────────────────┘\n";
-    $choice = readline(" └────> ");
+
+    $width_class = new border_width;
+    $width = $width_class->size;
+
+    $options = [
+        1 => 'Admin Menu',
+        2 => 'Student Menu',
+        'x' => 'Exit',
+    ];
+
+    Menu_Border("LENDING SYSTEM", $options, "TEST ERROR");
+    // echo "┌─────────────────────────────────────────────────┐\n";
+    // echo "│                  LENDING SYSTEM                 │\n";
+    // echo "├─────────────────────────────────────────────────┤\n";
+    // echo "│                     Options                     │\n";
+    // echo "├──────────────┬──────────────────────────────────┤\n";
+    // echo "│ (1)          │ Admin Menu                       │\n";
+    // echo "│ (2)          │ Student Menu                     │\n";
+    // echo "│ (x)          │ Exit                             │\n";
+    // echo "├──────────────┴──────────────────────────────────┘\n";
+    $choice = readline("└────> ");
     switch ($choice) {
         case "1":
             Admin_Menu();
@@ -22,11 +38,10 @@ function Main_Menu() {
         case "2":
             Student_Menu();
             break;
-        case "3":
-            echo "\nGoodbye~ ! <3\n\n";
+        case "x" || "X":
+            cls();
             exit;
-        }
-        
-}
-
+        } 
+    }
+    
 Main_Menu();
