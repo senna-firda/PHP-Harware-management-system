@@ -73,10 +73,12 @@ function Menu_Border($title, $options,$error_message) {
     $options_list = str_repeat("─", $input_options);
     $actions_list = str_repeat("─", $actions-1);
     
+    
     if (!empty($options)) {
         echo "│". str_pad("Options",$width," ", STR_PAD_BOTH). "│\n";
         echo "├" . $options_list . "┬" . $actions_list . "┤\n";
 
+        // Shows information in a kind of table way
         foreach ($options as $row => $label){
             $row = str_pad(" ($row)",$input_options-1," ",STR_PAD_BOTH);
             $label = str_pad($label,$actions-3," ",STR_PAD_BOTH );
@@ -93,6 +95,7 @@ function Menu_Border($title, $options,$error_message) {
         echo "├" . $options_list . "─" . $actions_list . "┘\n";
     }
 }
+
 
 /**
  * ### Adds newlines
@@ -118,7 +121,6 @@ function cls()
     Spacer(100);
     print "\033[2J\033[;H";
 }
-
 /**
  * Returns a random string
  * - Is used to generate random salts for users
@@ -134,7 +136,6 @@ function RandomStringGenerator($length)
     }
     return $random_string;
 }
-
 
 function Admin_Menu()
 {
@@ -511,9 +512,12 @@ function Lend_Hardware()
 function Add_Hardware()
 {
     cls();
-
+    $optionsempty = [];
     $conn_class = new connect();
     $conn = $conn_class->conn;
+    $width_class = new border_width();
+    $width = $width_class->size;
+    $_10_percent = $width/10;
 
     $i = 1;
     $counter = 1;
@@ -525,9 +529,16 @@ function Add_Hardware()
     $category_name_array = [];
 
 
-    echo "┌─────────────────────────────────────────────────┐\n";
-    echo "│                  ADD HARDWARE                   │\n";
-    echo "├──────────────┬──────────────────────────────────┤\n";
+    echo "┌".str_repeat("─",$width)."┐\n";
+    echo "│".str_pad("ADD HARDWARE",$width," ",STR_PAD_BOTH)."│\n";
+    echo "├─".str_repeat("─",$_10_percent*3+1)."┬";
+    echo str_repeat("─",$_10_percent*7-3)."┤\n";
+
+    echo "│ ".str_pad("ID",$_10_percent*3+1," ",STR_PAD_BOTH)."│";
+    echo str_pad("ITEM NAME",$_10_percent*7-3," ",STR_PAD_BOTH)."│\n";
+    echo "├──".str_repeat("─",$_10_percent*3)."┼";
+    
+    echo str_repeat("─",$_10_percent*7-3)."┤\n";
     
     
 
@@ -536,18 +547,21 @@ function Add_Hardware()
         $category_name_array[] = $row['category_name'];
 
         foreach ($category_name_array as $result) {
-            $e = str_pad($result, 32, " ", STR_PAD_RIGHT);
+            $e = str_pad($result, floor($_10_percent*7-3), " ", STR_PAD_BOTH);
             
         }
 
-        $padded_ids = str_pad($row['category_id'],8," ",STR_PAD_RIGHT);
-        echo "│ ID: $padded_ids │  {$e}│\n";
+        $padded_ids = str_pad($row['category_id'],floor($_10_percent*3)," ",STR_PAD_BOTH);
+        echo "│ $padded_ids │{$e}│\n";
         $counter++;
     }
+    $under = str_repeat("─",$_10_percent*3+2);
+    echo "├".$under."┴";
+    $under2 = str_repeat("─", $_10_percent*7-3);
+    echo $under2 ."┤\n";
+    echo "│".str_pad("Select category ID | 'x' to go back", $width," ",STR_PAD_BOTH)."│\n";
+    echo "├".str_repeat("─",$width)."┘\n";
 
-    echo "├──────────────┴──────────────────────────────────┤\n";   
-    echo "│       Select Category Id | 'x' to go back       │\n";
-    echo "├─────────────────────────────────────────────────┘\n";
     $category = readline("└────> ");
 
 
@@ -556,15 +570,9 @@ function Add_Hardware()
         $i++;
     }
 
-
     if (empty($category) || $category == 0 || $category >= $counter) {
-        echo "┌─────────────────────────────────────────────────┐\n";
-        echo "│                  ADD HARDWARE                   │\n";
-        echo "├─────────────────────────────────────────────────┤\n";
-        echo "│          Category chosen does not exist         │\n";
-        echo "├─────────────────────────────────────────────────┤\n";
-        echo "│             Press enter to go back              │\n";
-        echo "├─────────────────────────────────────────────────┘\n";
+        Menu_Border("ADD HARDWARE", $optionsempty, "Category chosen does not exist");
+
         readline("└────> ");
         return Admin_Menu();
     }
@@ -576,44 +584,29 @@ function Add_Hardware()
     }
     $result = mysqli_fetch_assoc($selected_query)["category_name"] ?? '';
 
-
+    $selected_category = [
+        "Selected" => $result
+    ];
     cls();
 
-    echo "┌─────────────────────────────────────────────────┐\n";
-    echo "│                  ADD HARDWARE                   │\n";
-    echo "├──────────────┬──────────────────────────────────┤\n";
-    $padded_category = str_pad($result,33," ",STR_PAD_BOTH);
-    echo "│   Selected   │$padded_category │\n";
-    echo "├──────────────┴──────────────────────────────────┤\n";   
-    echo "│   Enter product name (max:24) | 'x' to go back  │\n";
-    echo "├─────────────────────────────────────────────────┘\n";
+    Menu_Border("ADD HARDWARE | Enter product name (max:24) ",$selected_category,"");
+
     $item_name = readline("└────> ");
     
 
     // Empty inputs
     if (empty($item_name)) {
         cls();
-
-        echo "┌─────────────────────────────────────────────────┐\n";
-        echo "│                  ADD HARDWARE                   │\n";
-        echo "├─────────────────────────────────────────────────┤\n";
-        echo "│  Item name must be smaller than 24 characters   │\n";
-        echo "├─────────────────────────────────────────────────┤\n";
-        echo "│             Press enter to go back              │\n";
-        echo "├─────────────────────────────────────────────────┘\n";
+        Menu_Border("ADD HARDWARE", $optionsempty, "No input given");
         readline("└────> ");
         return Admin_Menu();
     }
     
     // Item name length limit (Max = 23)
     if (strlen($item_name) > 23){
-        echo "┌─────────────────────────────────────────────────┐\n";
-        echo "│                  ADD HARDWARE                   │\n";
-        echo "├─────────────────────────────────────────────────┤\n";
-        echo "│  Item name must be smaller than 24 characters   │\n";
-        echo "├─────────────────────────────────────────────────┤\n";
-        echo "│             Press enter to go back              │\n";
-        echo "├─────────────────────────────────────────────────┘\n";
+
+        Menu_Border("ADD HARDWARE", $optionsempty, "Item name must be smaller than 24 characters");
+
         readline("└────> ");
         return Admin_Menu();
     }
@@ -622,13 +615,7 @@ function Add_Hardware()
     VALUES ('$i','$status','$category','$item_name')";
     mysqli_query($conn, $insert_query);
 
-    echo "┌─────────────────────────────────────────────────┐\n";
-    echo "│                  ADD HARDWARE                   │\n";
-    echo "├─────────────────────────────────────────────────┤\n";
-    echo "│          Successfully added new item!           │\n";
-    echo "├─────────────────────────────────────────────────┤\n";
-    echo "│             Press enter to go back              │\n";
-    echo "├─────────────────────────────────────────────────┘\n";
+    Menu_Border("ADD HARDWARE", $optionsempty, "Successfully added new item!");
     readline("└────> ");
     Admin_Menu();
 }
@@ -642,13 +629,19 @@ function View_Lends()
 
     $current_time = date("Y-m-d");
     $current_time = str_pad($current_time,22," ",STR_PAD_RIGHT);
+    
     $view_loans = "SELECT * FROM `loans`";
     $loan_query = mysqli_query($conn,$view_loans);
-    
+        // 57 - 6 = 51 | 1: 7 | 2: 10 | 3: 14 | 4: 8 | 5: 12
+        // 7+10+14+8+12 = 51
+        // 1: 3.57 | 2: 5.1 | 3: 7.14 | 4: 4.08 | 5: 6.12
+        // ├──────────────────────┬────────────────────────────────┤
+        // │  100  │  505503  │  0000-00-00  │ Queued │  Returned  │
     echo "┌─────────────────────────────────────────────────┐\n";
     echo "│                    VIEW LENDS                   │\n";
     echo "├────┬────────────┬───────────┬────────┬──────────┤\n";
     echo "│ ID │ STUDENT ID │  DUEDATE  │  MAIL  │ RETURNED │\n";
+
 
     // List of lends
     foreach($loan_query as $row){

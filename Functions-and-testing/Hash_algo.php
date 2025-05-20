@@ -168,5 +168,6 @@ function Hash_Algorithm($input, $time_cost, $memory):string
     ;
     return substr($output,0,$time_cost);
 }
-$e = Hash_Algorithm("abfBA!Z1jDjLpKLB",255,29560);
+$e = Hash_Algorithm("TQ3QN-0JY4A-WLPDB",255,29560);
 echo $e;
+

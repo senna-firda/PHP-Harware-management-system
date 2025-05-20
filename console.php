@@ -21,15 +21,6 @@ function Main_Menu()
     ];
 
     Menu_Border("LENDING SYSTEM", $options, "TEST ERROR");
-    // echo "┌─────────────────────────────────────────────────┐\n";
-    // echo "│                  LENDING SYSTEM                 │\n";
-    // echo "├─────────────────────────────────────────────────┤\n";
-    // echo "│                     Options                     │\n";
-    // echo "├──────────────┬──────────────────────────────────┤\n";
-    // echo "│ (1)          │ Admin Menu                       │\n";
-    // echo "│ (2)          │ Student Menu                     │\n";
-    // echo "│ (x)          │ Exit                             │\n";
-    // echo "├──────────────┴──────────────────────────────────┘\n";
     $choice = readline("└────> ");
     switch ($choice) {
         case "1":

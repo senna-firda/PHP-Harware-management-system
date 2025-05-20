@@ -1,4 +1,6 @@
 <?php
+
+
 $key = [
     30, 69, 14, 41, 12, 65, 39, 92, 28, 47, 33, 53, 36, 26, 26, 59, 86, 59, 49, 65, 
     11, 47, 36, 87, 78, 12, 83, 87, 95, 78, 77, 26, 83, 59, 39, 98, 70, 86, 30, 30, 
@@ -35,6 +37,109 @@ function generateRandomKey($key) {
 
 // Call the function and print the random key array
 $randomList = generateRandomKey($key);
-($randomList);
 
-?>
+
+// echo "┌─────────┬───────────┬───────────────────────────┐\n";
+// echo "│ ID      │ Category  │ Product name              │\n";
+// echo "├─────────┼───────────┼───────────────────────────┤\n";
+$tables = [
+    "ID" => 20,
+    "Items" => 40,
+    "stuff" => 30,
+    // "stueff" => 30,
+    
+];
+//amount is the multidimensional array
+function table_generator($amount)
+{
+    $total_width = array_sum($amount);
+    $width = 55;
+    $i = 0;
+    $e=0;
+    $total = 1;
+    $line = 2;
+    $total_value = 0;
+
+    foreach ($amount as $table_name => $table_width){
+        $total++;
+        $e += strlen(str_pad($table_name, $table_width/$total_width*$width, "|",STR_PAD_BOTH))."\n";
+        $last_name = $table_name;
+    }
+    // debugging length
+    foreach ($amount as $table_name => $table_width){
+        $line += strlen(str_repeat(" ",$table_width/$total_width*$width));
+    }
+    echo "i = ";
+    for($i = 0; $i < $total-2; $i++){
+        echo $i+1 . ", ";
+        $line++;
+    }
+    echo "\n";
+    $i = 0;
+    // smaller
+    if (floor($line) < $width){
+        $difference = $width - $line;
+    }   // bigger
+        elseif(floor($line) > $width){
+        $difference = $width - $line;
+    } 
+
+    foreach ($amount as $table_name => $table_width){
+        echo $table_width/86*55 .", ";
+        $total_value += $table_width;
+    }
+    $amount[$last_name] += $difference;
+    echo "\n";
+    $amount[$last_name]+=$difference;
+    // echo "\nTotal width: $total_width\n";
+    echo "Difference: $difference\n";
+    echo "Total value: ".$total_value/86*55 ."\n";
+    echo "Amount of the last value: $amount[$last_name]\n\n";
+    echo "Length of repeating lines: $line\n";
+    
+    
+    
+    // Actual stuff
+    echo "\n\n┌";
+    foreach ($amount as $table_name => $table_width){
+        $i++;
+        $table_width = floor($table_width/$total_width*$width);
+        $width_table = strlen(str_pad($table_name, $table_width, "|",STR_PAD_BOTH))."\n";
+        echo str_repeat("─",$width_table);
+
+        if ($i <= $total-2){
+            echo "┬";
+        }
+    }
+    
+    
+    echo "┐\n";
+    echo "│";
+
+    foreach ($amount as $table_name => $table_width){
+        $table_width = floor($table_width/$total_width*$width);   
+        echo str_pad($table_name, $table_width, " ",STR_PAD_BOTH). "│";
+    }
+
+    $i = 0;
+    
+    echo "\n├";
+    foreach ($amount as $table_name => $table_width){
+        $i++;
+
+        $table_width = floor($table_width/$total_width*$width);
+        $width_table = strlen(str_pad($table_name, $table_width, "|",STR_PAD_BOTH))."\n";
+
+        echo str_repeat("─",$width_table);
+
+        if ($i <= $total-2){
+            echo "┼";
+        } 
+    }
+    echo "┤";
+}
+// ┌────────────┬────────────────────────┬────────────────┐  
+// ├─────────┼──────────────────┼─────────────┼────────────┤
+
+
+table_generator($tables);

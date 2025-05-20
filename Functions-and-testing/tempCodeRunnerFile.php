@@ -1,2 +1,2 @@
 <?php
-0
+echo $final_length;
